@@ -1,24 +1,9 @@
-const handleEditAvatarClick = () => {
-  const avatarPopup = document.querySelector('.avatar-popup');
-  avatarPopup.classList.add('popup_opened');
-};
-
-const handleEditProfileClick = () => {
-  const editProfilePopup = document.querySelector('.edit-popup');
-  editProfilePopup.classList.add('popup_opened');
-};
-
-const handleAddPlaceClick = () => {
-  const addPlacePopup = document.querySelector('.add-popup');
-  addPlacePopup.classList.add('popup_opened');
-};
-
-function Main() {
+function Main({onEditProfile, onAddPlace, onEditAvatar}) {
   return (
     <main className="main">
       <section className="profile">
         <div className="profile__image-overlay">
-          <img src="#" alt="Аватар пользователя" className="profile__image" onClick={handleEditAvatarClick}/>
+          <img src="#" alt="Аватар пользователя" className="profile__image" onClick={onEditAvatar}/>
         </div>
         <div className="profile__info">
           <h1 className="profile__title" aria-label="Имя пользователя" />
@@ -26,7 +11,7 @@ function Main() {
             className="profile__edit-button"
             type="button"
             aria-label="Редактировать"
-            onClick={handleEditProfileClick}
+            onClick={onEditProfile}
           />
           <p className="profile__caption" />
         </div>
@@ -34,7 +19,7 @@ function Main() {
           className="profile__add-button"
           type="button"
           aria-label="Добавить"
-          onClick={handleAddPlaceClick}
+          onClick={onAddPlace}
         />
       </section>
       <section className="elements" aria-label="Карточки мест России">

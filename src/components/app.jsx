@@ -1,3 +1,4 @@
+import React from 'react';
 import '../index.css';
 import Header from './header';
 import Main from './main';
@@ -6,17 +7,45 @@ import PopupWithForm from './popup-with-form';
 import ImagePopup from './image-popup';
 
 function App() {
+  const [isEditProfilePopupOpen, setEditProfilePopup] = React.useState(false);
+  const [isAddPlacePopupOpen, setAddPlacePopup] = React.useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatarPopup] = React.useState(false);
+
+  const handleEditAvatarClick = () => {
+    setEditAvatarPopup(true);
+  };
+
+  const handleEditProfileClick = () => {
+    setEditProfilePopup(true);
+  };
+
+  const handleAddPlaceClick = () => {
+    setAddPlacePopup(true);
+  };
+
+  const closeAllPopups = () => {
+    setEditAvatarPopup(false);
+    setEditProfilePopup(false);
+    setAddPlacePopup(false);
+  }
+
   return (
     <>
       <div className="page__container">
         <Header />
-        <Main />
+        <Main
+          onEditProfile={handleEditProfileClick}
+          onAddPlace={handleAddPlaceClick}
+          onEditAvatar={handleEditAvatarClick}
+        />
         <Footer />
       </div>
       <PopupWithForm
         name='profile'
         title='Редактировать профиль'
         button='Сохранить'
+        isOpen={isEditProfilePopupOpen}
+        onClose={closeAllPopups}
       >
         <div className="popup__form-wrapper">
           <input
@@ -106,6 +135,8 @@ function App() {
         name="add"
         title="Новое место"
         button="Создать"
+        isOpen={isAddPlacePopupOpen}
+        onClose={closeAllPopups}
       >
         <div className="popup__form-wrapper">
           <input
@@ -216,6 +247,8 @@ function App() {
         name="avatar"
         title="Обновить аватар"
         button="Сохранить"
+        isOpen={isEditAvatarPopupOpen}
+        onClose={closeAllPopups}
       >
         <div className="popup__form-wrapper">
           <input
