@@ -1,11 +1,13 @@
 import React from 'react';
 import api from '../utils/api';
+import Card from './card';
 
-function Main({onEditProfile, onAddPlace, onEditAvatar}) {
+function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
 
   const [userName, setUserName] = React.useState('');
   const [userDescription, setUserDescription] = React.useState('');
   const [userAvatar, setUserAvatar] = React.useState('');
+  const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
     api.getUserInfo()
@@ -13,6 +15,16 @@ function Main({onEditProfile, onAddPlace, onEditAvatar}) {
         setUserName(name);
         setUserDescription(about);
         setUserAvatar(avatar);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  React.useEffect(() => {
+    api.getInitialCards()
+      .then(data => {
+        setCards(data);
       })
       .catch((error) => {
         console.log(error);
@@ -28,7 +40,7 @@ function Main({onEditProfile, onAddPlace, onEditAvatar}) {
             alt="Аватар пользователя"
             className="profile__image"
             onClick={onEditAvatar}
-            />
+          />
         </div>
         <div className="profile__info">
           <h1 className="profile__title" aria-label="Имя пользователя">
@@ -52,7 +64,11 @@ function Main({onEditProfile, onAddPlace, onEditAvatar}) {
         />
       </section>
       <section className="elements" aria-label="Карточки мест России">
-        <ul className="elements__list" />
+        <ul className="elements__list">
+          {cards.map((card) => (
+            <Card card={card} onCardClick={onCardClick} key={card._id}/>
+          ))}
+        </ul>
       </section>
     </main>
   );

@@ -10,6 +10,7 @@ function App() {
   const [isEditProfilePopupOpen, setEditProfilePopup] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopup] = React.useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopup] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState([]);
 
   const handleEditAvatarClick = () => {
     setEditAvatarPopup(true);
@@ -27,6 +28,7 @@ function App() {
     setEditAvatarPopup(false);
     setEditProfilePopup(false);
     setAddPlacePopup(false);
+    setSelectedCard([]);
   }
 
   return (
@@ -37,6 +39,7 @@ function App() {
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
+          onCardClick={setSelectedCard}
         />
         <Footer />
       </div>
@@ -218,7 +221,10 @@ function App() {
           </form>
         </div>
       </div> */}
-      <ImagePopup />
+      <ImagePopup
+        card={selectedCard}
+        onClose={closeAllPopups}
+      />
       <PopupWithForm
         name="delete"
         title="Вы уверены?"
@@ -302,19 +308,6 @@ function App() {
           </form>
         </div>
       </div> */}
-      <template className="cards">
-        <li className="elements__list-item">
-          <img alt="Изображение места на карточке" className="elements__image" />
-          <button className="elements__delete" type="button" />
-          <div className="elements__caption">
-            <h2 className="elements__title" />
-            <div className="elements__like-wrapper">
-              <button className="elements__heart" type="button" />
-              <p className="elements__like-counter">0</p>
-            </div>
-          </div>
-        </li>
-      </template>
     </>
   );
 }
