@@ -2,8 +2,8 @@ import apiOptions from './constants.js';
 
 class Api {
   constructor({ url, headers }) {
-      this._url = url;
-      this._headers = headers;
+    this._url = url;
+    this._headers = headers;
   }
 
   _getRequest(url, options) {
@@ -22,72 +22,77 @@ class Api {
       })
   }
 
-  getUserInfo () {
+  getUserInfo() {
     return this._getRequest(`${this._url}/users/me`, {
-        method: 'GET',
-        headers: this._headers
+      method: 'GET',
+      headers: this._headers
     })
   }
 
-  setUserInfo (data) {
+  setUserInfo(data) {
     return this._getRequest(`${this._url}/users/me`, {
-        method: 'PATCH',
-        headers: this._headers,
-        body: JSON.stringify({
-          name: data.nameInput,
-          about: data.about
-        }),
-      }
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify({
+        name: data.nameInput,
+        about: data.about
+      }),
+    }
     )
   }
 
-  changeAvatar (data) {
+  changeAvatar(data) {
     return this._getRequest(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
         avatar: data['avatar-link'],
       }),
-      }
+    }
     )
   }
 
-  getInitialCards () {
-      return this._getRequest(`${this._url}/cards`, {
-          method: 'GET',
-          headers: this._headers
-      })
+  getInitialCards() {
+    return this._getRequest(`${this._url}/cards`, {
+      method: 'GET',
+      headers: this._headers
+    })
   }
 
-  createCard (data) {
+  createCard(data) {
     console.log(data)
-      return this._getRequest(`${this._url}/cards`, {
-          method: 'POST',
-          headers: this._headers,
-          body: JSON.stringify(data)
-      })
+    return this._getRequest(`${this._url}/cards`, {
+      method: 'POST',
+      headers: this._headers,
+      body: JSON.stringify(data)
+    })
   }
 
-  deleteCard (id) {
-      return this._getRequest(`${this._url}/cards/${id}`, {
-          method: 'DELETE',
-          headers: this._headers
-      })
+  deleteCard(id) {
+    return this._getRequest(`${this._url}/cards/${id}`, {
+      method: 'DELETE',
+      headers: this._headers
+    })
   }
 
-  setlike (id) {
-    return this._getRequest(`${this._url}/cards/${id}/likes`, {
+  setlike(id, isLiked) {
+    return isLiked
+      ? this._getRequest(`${this._url}/cards/${id}/likes`, {
         method: 'PUT',
         headers: this._headers,
-    })
-  }
-
-  removeLike (id) {
-    return this._getRequest(`${this._url}/cards/${id}/likes`, {
+      })
+      : this._getRequest(`${this._url}/cards/${id}/likes`, {
         method: 'DELETE',
         headers: this._headers,
-    })
+      });
   }
+
+  // removeLike (id) {
+  //   return this._getRequest(`${this._url}/cards/${id}/likes`, {
+  //       method: 'DELETE',
+  //       headers: this._headers,
+  //   })
+  // }
 }
 
 const api = new Api(apiOptions);
