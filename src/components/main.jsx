@@ -1,39 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import api from '../utils/Api';
+import React from 'react';
 import Card from './card';
+import CurrentUserContext from '../contexts/CurrentUserContext';
+import CardsContext from '../contexts/CardsContext';
 
 function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
 
-  const [userName, setUserName] = useState('');
-  const [userDescription, setUserDescription] = useState('');
-  const [userAvatar, setUserAvatar] = useState('');
-  const [cards, setCards] = useState([]);
-
-  useEffect(() => {
-    api.getUserInfo()
-      .then(({ name, about, avatar }) => {
-        setUserName(name);
-        setUserDescription(about);
-        setUserAvatar(avatar);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    api.getInitialCards()
-      .then(data => {
-        setCards(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  const { name, about, avatar } = React.useContext(CurrentUserContext);
+  const cards = React.useContext(CardsContext);
 
   return (
     <main className="main">
       <section className="profile">
         <div className="profile__image-overlay">
           <img
-            src={userAvatar}
+            src={avatar}
             alt="Аватар пользователя"
             className="profile__image"
             onClick={onEditAvatar}
@@ -41,7 +21,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
         </div>
         <div className="profile__info">
           <h1 className="profile__title" aria-label="Имя пользователя">
-            {userName}
+            {name}
           </h1>
           <button
             className="profile__edit-button"
@@ -50,7 +30,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
             onClick={onEditProfile}
           />
           <p className="profile__caption">
-            {userDescription}
+            {about}
           </p>
         </div>
         <button
