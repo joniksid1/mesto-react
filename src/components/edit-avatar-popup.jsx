@@ -13,6 +13,12 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
     });
   }
 
+  React.useEffect(() => {
+    if (isOpen) {
+      avatarLink.current.value = '';
+    }
+  }, [isOpen]);
+
   return (
     <PopupWithForm
       name="avatar"
