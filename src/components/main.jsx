@@ -3,7 +3,7 @@ import Card from './card';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import CardsContext from '../contexts/CardsContext';
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike, onCardDelete }) {
+function Main({ onEditProfile, onAddPlace, onEditAvatar, onDeletePopup, onSelectDeleteCard, onCardClick, onCardLike }) {
 
   const { name, about, avatar } = React.useContext(CurrentUserContext);
   const cards = React.useContext(CardsContext);
@@ -43,7 +43,15 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike
       <section className="elements" aria-label="Карточки мест России">
         <ul className="elements__list">
           {cards.map((card) => (
-            <Card card={card} onCardClick={onCardClick} onCardLike={onCardLike} onCardDelete={onCardDelete} key={card._id} />
+            <Card
+              card={card}
+              onCardClick={onCardClick}
+              onCardLike={onCardLike}
+              onCardDelete={onDeletePopup}
+              onSelectDeleteCard={onSelectDeleteCard}
+              onDeletePopup={onDeletePopup}
+              key={card._id}
+            />
           ))}
         </ul>
       </section>

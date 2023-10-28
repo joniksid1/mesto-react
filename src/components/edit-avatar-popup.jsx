@@ -1,7 +1,7 @@
 import React from "react";
 import PopupWithForm from "./popup-with-form";
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
+function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, onLoading }) {
 
   const avatarLink = React.useRef()
 
@@ -26,6 +26,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
       button="Сохранить"
       isOpen={isOpen}
       onClose={onClose}
+      onLoading={onLoading}
       onSubmit={handleSubmit}
     >
       <div className="popup__form-wrapper">
