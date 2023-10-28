@@ -34,19 +34,19 @@ class Api {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
-        name: data.nameInput,
+        name: data.name,
         about: data.about
       }),
     }
     )
   }
 
-  changeAvatar(data) {
+  changeAvatar({avatar}) {
     return this._getRequest(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
-        avatar: data['avatar-link'],
+        avatar: avatar,
       }),
     }
     )
