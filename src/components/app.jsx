@@ -10,6 +10,7 @@ import CardsContext from '../contexts/CardsContext';
 import api from '../utils/Api';
 import EditProfilePopup from './edit-profile-popup';
 import EditAvatarPopup from './edit-avatar-popup';
+import AddPlacePopup from './add-place-popup';
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopup] = useState(false);
@@ -74,6 +75,17 @@ function App() {
       });
   }
 
+  function handleAddCard(data) {
+    api.createCard(data)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopups();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   useEffect(() => {
     api.getUserInfo()
       .then((data) => {
@@ -113,44 +125,11 @@ function App() {
             onClose={closeAllPopups}
             onUpdateUser={handleUpdateUser}
           />
-          <PopupWithForm
-            name="add"
-            title="Новое место"
-            button="Создать"
+          <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
-          >
-            <div className="popup__form-wrapper">
-              <input
-                name="place"
-                minLength={2}
-                maxLength={30}
-                placeholder="Название"
-                type="text"
-                id="name"
-                className="popup__input popup__input_type_place"
-                required=""
-              />
-              <span
-                className="popup__input-error popup__input-error_type_place"
-                id="name-error"
-              />
-            </div>
-            <div className="popup__form-wrapper">
-              <input
-                name="link"
-                placeholder="Ссылка на картинку"
-                type="url"
-                id="link"
-                className="popup__input popup__input_type_link"
-                required=""
-              />
-              <span
-                className="popup__input-error popup__input-error_type_link"
-                id="link-error"
-              />
-            </div>
-          </PopupWithForm>
+            onAddCard={handleAddCard}
+          />
           <ImagePopup
             card={selectedCard}
             onClose={closeAllPopups}

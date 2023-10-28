@@ -60,7 +60,6 @@ class Api {
   }
 
   createCard(data) {
-    console.log(data)
     return this._getRequest(`${this._url}/cards`, {
       method: 'POST',
       headers: this._headers,
