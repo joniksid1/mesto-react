@@ -1,9 +1,9 @@
 import React from "react";
 
-function PopupWithForm({ name, title, button, children, isOpen, onClose, onSubmit, onLoading }) {
+function PopupWithForm({ name, title, button, children, isOpen, onClose, onSubmit, onLoading, onOverlayClick }) {
 
   return (
-    <div className={`popup ${isOpen ? 'popup_opened' : ''}`}>
+    <div className={`popup ${isOpen ? 'popup_opened' : ''}`} onClick={onOverlayClick}>
       <div className={`popup__container ${name}-popup__container`}>
         <button
           className="popup__close-button"

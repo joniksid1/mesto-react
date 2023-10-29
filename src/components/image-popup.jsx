@@ -1,8 +1,9 @@
 import React from "react";
 
-function ImagePopup({ card, onClose }) {
+function ImagePopup({ card, onClose, onOverlayClick}) {
+
   return (
-    <div className={`popup image-popup ${card.link ? 'popup_opened' : ''}`}>
+    <div className={`popup image-popup ${card.link ? 'popup_opened' : ''}`} onClick={onOverlayClick}>
       <figure className="image-popup__figure">
         <button
           className="popup__close-button image-popup__close-button"

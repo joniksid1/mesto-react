@@ -17,15 +17,44 @@ function App() {
   const [isAddPlacePopupOpen, setAddPlacePopup] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopup] = useState(false);
   const [isDeletePopupOpen, setDeletePopup] = useState(false);
+  const [isImagePopupOpen, setImagePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState([]);
   const [selectedDeleteCard, setSelectedDeleteCard] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      closeAllPopups();
+    };
+  };
+
+  useEffect(() => {
+    const handleEscKey = (event) => {
+      if (
+        (isEditProfilePopupOpen
+        || isAddPlacePopupOpen
+        || isEditAvatarPopupOpen
+        || isDeletePopupOpen
+        || isImagePopupOpen)
+        && event.key === "Escape") {
+        closeAllPopups();
+      }
+    };
+
+    window.addEventListener("keydown", handleEscKey);
+
+    return () => {
+      window.removeEventListener("keydown", handleEscKey);
+    };
+
+  }, [isEditProfilePopupOpen, isAddPlacePopupOpen, isEditAvatarPopupOpen, isDeletePopupOpen, isImagePopupOpen]);
+
+
   const handleDeletePopupClick = () => {
     setDeletePopup(true);
-  }
+  };
 
   const handleEditAvatarClick = () => {
     setEditAvatarPopup(true);
@@ -38,6 +67,10 @@ function App() {
   const handleAddPlaceClick = () => {
     setAddPlacePopup(true);
   };
+
+  const handleImagePopupOpen = () => {
+    setImagePopupOpen(true);
+  }
 
   const closeAllPopups = () => {
     setEditAvatarPopup(false);
@@ -162,6 +195,7 @@ function App() {
               onEditAvatar={handleEditAvatarClick}
               onDeletePopup={handleDeletePopupClick}
               onSelectDeleteCard={setSelectedDeleteCard}
+              onImageOpen={handleImagePopupOpen}
               onCardClick={setSelectedCard}
               onCardLike={handleCardLike}
             />
@@ -172,16 +206,19 @@ function App() {
             onClose={closeAllPopups}
             onUpdateUser={handleUpdateUser}
             onLoading={isLoading}
+            onOverlayClick={handleOverlayClick}
           />
           <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
             onAddCard={handleAddCard}
             onLoading={isLoading}
+            onOverlayClick={handleOverlayClick}
           />
           <ImagePopup
             card={selectedCard}
             onClose={closeAllPopups}
+            onOverlayClick={handleOverlayClick}
           />
           <DeletePopup
             isOpen={isDeletePopupOpen}
@@ -189,12 +226,14 @@ function App() {
             onDeleteCard={handleCardDelete}
             card={selectedDeleteCard}
             onLoading={isLoading}
+            onOverlayClick={handleOverlayClick}
           />
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
             onUpdateAvatar={handleUpdateAvatar}
             onLoading={isLoading}
+            onOverlayClick={handleOverlayClick}
           />
         </CardsContext.Provider>
       </CurrentUserContext.Provider>

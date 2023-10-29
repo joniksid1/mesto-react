@@ -2,7 +2,7 @@ import React from "react";
 import PopupWithForm from "./popup-with-form";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser, onLoading }) {
+function EditProfilePopup({ isOpen, onClose, onUpdateUser, onLoading, onOverlayClick }) {
   const currentUser = React.useContext(CurrentUserContext);
   const [nameValue, setNameValue] = React.useState('');
   const [descriptionValue, setDescriptionValue] = React.useState('');
@@ -40,6 +40,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, onLoading }) {
       onClose={onClose}
       onLoading={onLoading}
       onSubmit={handleSubmit}
+      onOverlayClick={onOverlayClick}
     >
       <div className="popup__form-wrapper">
         <input
