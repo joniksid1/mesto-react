@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import '../index.css';
 import Header from './header';
 import Main from './main';
@@ -11,6 +11,8 @@ import EditProfilePopup from './edit-profile-popup';
 import EditAvatarPopup from './edit-avatar-popup';
 import AddPlacePopup from './add-place-popup';
 import DeletePopup from './delete-popup';
+import { validationConfig, formValidators } from '../utils/constants';
+import { enableValidation, FormValidator } from '../utils/FormValidator';
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopup] = useState(false);
@@ -30,14 +32,44 @@ function App() {
     };
   };
 
+  const resetValidationAll = useCallback((formValidators) => {
+    for (const key in formValidators) {
+      if (formValidators.hasOwnProperty(key) && formValidators[key] instanceof FormValidator) {
+        formValidators[key].resetValidation();
+      }
+    }
+  }, []);
+
+  const closeAllPopups = useCallback(() => {
+    setEditAvatarPopup(false);
+    setEditProfilePopup(false);
+    setAddPlacePopup(false);
+    setDeletePopup(false);
+    setSelectedCard([]);
+    setSelectedDeleteCard([]);
+    resetValidationAll(formValidators);
+    formValidators['delete'].setButtonState(true);
+  },
+    [
+      setEditAvatarPopup,
+      setEditProfilePopup,
+      setAddPlacePopup,
+      setDeletePopup,
+      setSelectedCard,
+      setSelectedDeleteCard,
+      resetValidationAll,
+    ]
+  );
+
   useEffect(() => {
+    enableValidation(validationConfig);
     const handleEscKey = (event) => {
       if (
         (isEditProfilePopupOpen
-        || isAddPlacePopupOpen
-        || isEditAvatarPopupOpen
-        || isDeletePopupOpen
-        || isImagePopupOpen)
+          || isAddPlacePopupOpen
+          || isEditAvatarPopupOpen
+          || isDeletePopupOpen
+          || isImagePopupOpen)
         && event.key === "Escape") {
         closeAllPopups();
       }
@@ -49,7 +81,16 @@ function App() {
       window.removeEventListener("keydown", handleEscKey);
     };
 
-  }, [isEditProfilePopupOpen, isAddPlacePopupOpen, isEditAvatarPopupOpen, isDeletePopupOpen, isImagePopupOpen]);
+  },
+    [
+      isEditProfilePopupOpen,
+      isAddPlacePopupOpen,
+      isEditAvatarPopupOpen,
+      isDeletePopupOpen,
+      isImagePopupOpen,
+      closeAllPopups
+    ]
+  );
 
 
   const handleDeletePopupClick = () => {
@@ -70,15 +111,6 @@ function App() {
 
   const handleImagePopupOpen = () => {
     setImagePopupOpen(true);
-  }
-
-  const closeAllPopups = () => {
-    setEditAvatarPopup(false);
-    setEditProfilePopup(false);
-    setAddPlacePopup(false);
-    setDeletePopup(false);
-    setSelectedCard([]);
-    setSelectedDeleteCard([]);
   }
 
   function showLoader() {
@@ -108,6 +140,7 @@ function App() {
       .then(() => {
         setCards((state) => state.filter((c) => c._id !== card._id));
         closeAllPopups();
+        formValidators['delete'].setButtonState(true);
       })
       .catch((error) => {
         console.log(error);

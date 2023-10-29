@@ -1,4 +1,4 @@
-import apiOptions from './constants.js';
+import { apiOptions } from './constants.js';
 
 class Api {
   constructor({ url, headers }) {
@@ -86,12 +86,6 @@ class Api {
       });
   }
 
-  // removeLike (id) {
-  //   return this._getRequest(`${this._url}/cards/${id}/likes`, {
-  //       method: 'DELETE',
-  //       headers: this._headers,
-  //   })
-  // }
 }
 
 const api = new Api(apiOptions);
